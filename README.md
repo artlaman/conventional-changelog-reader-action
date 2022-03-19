@@ -1,116 +1,89 @@
-# Create a JavaScript Action
+# Conventional Changelog Reader
 
-<p align="center">
-  <a href="https://github.com/actions/javascript-action/actions"><img alt="javscript-action status" src="https://github.com/actions/javascript-action/workflows/units-test/badge.svg"></a>
-</p>
+<a href="https://github.com/actions/javascript-action/actions"><img alt="javscript-action status" src="https://github.com/actions/javascript-action/workflows/units-test/badge.svg"></a>
 
-Use this template to bootstrap the creation of a JavaScript action.:rocket:
+A GitHub action to read and get data from the `CHANGELOG.md` files following the [Conventional Changelog](https://github.com/conventional-changelog/conventional-changelog) standard and created with `conventionalcommits` flag: `conventional-changelog -p conventionalcommits`
 
-This template includes tests, linting, a validation workflow, publishing, and versioning guidance.
+# Usage
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+### Pre-requisites
 
-## Create an action from this template
+Create a workflow `.yml` file in your repositories `.github/workflows` directory. An [example workflow](#example-workflow---create-a-release-from-changelog) is available below. For more information, reference the GitHub Help Documentation for [Creating a workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file).
 
-Click the `Use this Template` and provide the new repo details for your action
+### Inputs
 
-## Code in Main
+- `path`: The path the action can find the CHANGELOG. Optional. Defaults to `./CHANGELOG.md`.
+- `version`: The [exact version](https://semver.org) of the log entry you want to retreive or "Unreleased" for the unreleased entry. Optional. Defaults to the last version number.
 
-Install the dependencies
+### Outputs
 
-```bash
-npm install
-```
+- `version`: Version of the log entry found. Ex: `2.0.0`.
+- `date`: Release date of the log entry found. Ex: `2020-08-22`.
+- `status`: Status of the log entry found (`prereleased`, `released`, `unreleased`, or `yanked`).
+- `changes`: Description text of the log entry found.
 
-Run the tests :heavy_check_mark:
+### Example workflow - create a release from changelog
 
-```bash
-$ npm test
-
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-...
-```
-
-## Change action.yml
-
-The action.yml defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-const core = require('@actions/core');
-...
-
-async function run() {
-  try {
-      ...
-  }
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
-
-## Package for distribution
-
-GitHub Actions will run the entry point from the action.yml. Packaging assembles the code into one file that can be checked in to Git, enabling fast and reliable execution and preventing the need to check in node_modules.
-
-Actions are run from GitHub repos.  Packaging the action will create a packaged action in the dist folder.
-
-Run prepare
-
-```bash
-npm run prepare
-```
-
-Since the packaged index.js is run from the dist folder.
-
-```bash
-git add dist
-```
-
-## Create a release branch
-
-Users shouldn't consume the action from master since that would be latest code and actions can break compatibility between major versions.
-
-Checkin to the v1 release branch
-
-```bash
-git checkout -b v1
-git commit -a -m "v1 release"
-```
-
-```bash
-git push origin v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket:
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Usage
-
-You can now consume the action by referencing the v1 branch
+On every `push` to a tag matching the pattern `v*`, [create a release](https://developer.github.com/v3/repos/releases/#create-a-release) using the CHANGELOG.md content.
+This Workflow example assumes you'll use the [`@actions/create-release`](https://www.github.com/actions/create-release) Action to create the release step:
 
 ```yaml
-uses: actions/javascript-action@v1
-with:
-  milliseconds: 1000
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Create Release
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get version from tag
+        id: tag_name
+        run: |
+          echo ::set-output name=current_version::${GITHUB_REF#refs/tags/v}
+        shell: bash
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get Changelog Entry
+        id: changelog_reader
+        uses: artlaman/conventional-changelog-reader-action@v1
+        with:
+          version: ${{ steps.tag_name.outputs.current_version }}
+          path: ./CHANGELOG.md
+      - name: Create/update release
+        uses: ncipollo/release-action@v1
+        with:
+          # This pulls from the "Get Changelog Entry" step above, referencing it's ID to get its outputs object.
+          # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          tag: ${{ steps.changelog_reader.outputs.version }}
+          name: Release ${{ steps.changelog_reader.outputs.version }}
+          body: ${{ steps.changelog_reader.outputs.changes }}
+          prerelease: ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-See the [actions tab](https://github.com/actions/javascript-action/actions) for runs of this action! :rocket:
+## Contribution
+
+Contributions to the source code of _Conventional Changelog Reader Action_ are welcomed and greatly appreciated.
+For help on how to contribute in this project, please refer to [How to contribute to Conventional Changelog Reader Action](CONTRIBUTING.md).
+
+To see the project's list of **awesome contributors**, please refer to our [Contributors Wall](CONTRIBUTORS.md).
+
+## Support
+
+_Conventional Changelog Reader Action_ is licensed under an MIT license, which means that it's a completely free open source software. Unfortunately, _Conventional Changelog Reader Action_ doesn't make itself. Version 2.0.0 is the next step, which will result in many late, beer-filled nights of development.
+
+If you're using _Conventional Changelog Reader Action_ and want to support the development, you now have the chance! Go on my [GitHub Sponsor page](https://github.com/sponsors/mindsers) and become my joyful sponsor!!
+
+For more help on how to support Changelog Reader Action, please refer to [The awesome people who support Changelog Reader Action](SPONSORS.md).
+
+<!-- ### Premium sponsors -->
+
+## License
+
+The scripts and documentation in this project are released under the [MIT License](LICENSE)
