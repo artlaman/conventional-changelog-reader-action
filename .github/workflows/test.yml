@@ -1,25 +1,33 @@
-name: "units-test"
+name: test
 on:
   pull_request:
   push:
     branches:
-      - main
-      - 'releases/*'
+      - master
 
 jobs:
   # unit tests
-  units:
+  unit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - run: npm ci
-    - run: npm test
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm test
 
   # test action works running from the graph
-  test:
+  e2e:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: ./
-      with:
-        milliseconds: 1000
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v2
+
+      - name: 🏃 Run the changelog reader
+        id: changelog_reader
+        uses: ./
+
+      - name: 🖥 Display output
+        run: |
+          echo "Version: ${{ steps.changelog_reader.outputs.version }}"
+          echo "Date: ${{ steps.changelog_reader.outputs.date }}"
+          echo "Status: ${{ steps.changelog_reader.outputs.status }}"
+          echo "Changes: ${{ steps.changelog_reader.outputs.changes }}"
