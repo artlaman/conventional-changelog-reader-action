@@ -50,7 +50,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Get Changelog Entry
         id: changelog_reader
-        uses: artlaman/conventional-changelog-reader-action@v1
+        uses: artlaman/conventional-changelog-reader-action@v1.1.0
         with:
           version: ${{ steps.tag_name.outputs.current_version }}
           path: ./CHANGELOG.md
