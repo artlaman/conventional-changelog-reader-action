@@ -72,17 +72,9 @@ jobs:
 Contributions to the source code of _Conventional Changelog Reader Action_ are welcomed and greatly appreciated.
 For help on how to contribute in this project, please refer to [How to contribute to Conventional Changelog Reader Action](CONTRIBUTING.md).
 
-To see the project's list of **awesome contributors**, please refer to our [Contributors Wall](CONTRIBUTORS.md).
-
 ## Support
 
-_Conventional Changelog Reader Action_ is licensed under an MIT license, which means that it's a completely free open source software. Unfortunately, _Conventional Changelog Reader Action_ doesn't make itself. Version 2.0.0 is the next step, which will result in many late, beer-filled nights of development.
-
-If you're using _Conventional Changelog Reader Action_ and want to support the development, you now have the chance! Go on my [GitHub Sponsor page](https://github.com/sponsors/mindsers) and become my joyful sponsor!!
-
-For more help on how to support Changelog Reader Action, please refer to [The awesome people who support Changelog Reader Action](SPONSORS.md).
-
-<!-- ### Premium sponsors -->
+If you like _Conventional Changelog Reader Action_ please star my [repository](https://github.com/artlaman/conventional-changelog-reader-action) would appreciate that a lot!
 
 ## License
 
