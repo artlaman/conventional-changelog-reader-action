@@ -1,35 +1,40 @@
 {
-  "name": "javascript-action",
+  "name": "conventional-changelog-reader-action",
   "version": "1.0.0",
-  "description": "JavaScript Action Template",
+  "description": "A GitHub action to read and get data from the CHANGELOG.md files following the Conventional Changelog standard",
   "main": "index.js",
+  "author": "Artem Laman <artlaman@outlook.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/artlaman/conventional-changelog-reader-action#readme",
   "scripts": {
-    "lint": "eslint .",
-    "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
-    "test": "jest",
-    "all": "npm run lint && npm run prepare && npm run test"
+    "lint": "eslint src/**/*.js",
+    "package": "ncc build index.js -o dist",
+    "test": "npm run lint && jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git+https://github.com/artlaman/conventional-changelog-reader-action.git"
   },
   "keywords": [
-    "GitHub",
-    "Actions",
-    "JavaScript"
+    "github",
+    "workflow",
+    "github-actions",
+    "actions",
+    "changelog",
+    "conventional-commits"
   ],
-  "author": "",
-  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/artlaman/conventional-changelog-reader-action/issues"
   },
-  "homepage": "https://github.com/actions/javascript-action#readme",
   "dependencies": {
     "@actions/core": "^1.2.5"
   },
   "devDependencies": {
+    "@types/jest": "^27.2.5",
+    "@types/semver": "^7.3.3",
     "@vercel/ncc": "^0.31.1",
     "eslint": "^8.0.0",
-    "jest": "^27.2.5"
+    "jest": "^27.2.5",
+    "semver": "^7.3.3"
   }
 }
