@@ -1,6 +1,6 @@
 {
   "name": "conventional-changelog-reader-action",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A GitHub action to read and get data from the CHANGELOG.md files following the Conventional Changelog standard",
   "main": "index.js",
   "author": "Artem Laman <artlaman@outlook.com>",
