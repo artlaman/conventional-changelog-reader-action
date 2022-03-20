@@ -1,8 +1,8 @@
-# Conventional Changelog Reader
+# :scroll: Conventional Changelog Reader
 
 <a href="https://github.com/actions/javascript-action/actions"><img alt="javscript-action status" src="https://github.com/actions/javascript-action/workflows/units-test/badge.svg"></a>
 
-A GitHub action to read and get data from the `CHANGELOG.md` files following the [Conventional Changelog](https://github.com/conventional-changelog/conventional-changelog) standard and created with `conventionalcommits` flag: `conventional-changelog -p conventionalcommits`
+A GitHub action to read and get data from the `CHANGELOG.md` files following the [Conventional Changelog](https://github.com/conventional-changelog/conventional-changelog) standard and created by [conventional-changelog-cli](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-cli) with `conventionalcommits` flag: `conventional-changelog -p conventionalcommits`
 
 # Usage
 
