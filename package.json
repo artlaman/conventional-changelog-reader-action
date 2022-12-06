@@ -33,7 +33,7 @@
   "devDependencies": {
     "@types/jest": "^27.2.5",
     "@types/semver": "^7.3.3",
-    "@vercel/ncc": "^0.33.3",
+    "@vercel/ncc": "^0.36.0",
     "conventional-changelog-cli": "^2.2.2",
     "eslint": "^8.0.0",
     "jest": "^27.5.1",
